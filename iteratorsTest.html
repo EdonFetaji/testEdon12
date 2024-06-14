@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iterators </title>
+</head>
+<body>
+<h1>Iterators </h1>
+
+<script>
+
+    //Simple iterator that lets you iterate through the squares of integers up to a defined max
+
+    // closure function
+    function squaredIterator(max) {
+        var n = 0;
+        // iterator object
+        return {
+            // function of iterator object
+            next() {
+                n++;
+                if (n <= max) {
+                    return {
+                        value: n ** 2,
+                        done: false,
+                    }
+                }
+                return {
+                    value: undefined,
+                    done: true
+                }
+            }
+        }
+    }
+
+
+    class ArrIterator {
+        array
+        i
+
+        constructor(a) {
+            this.array = a
+            this.i = -1
+        }
+
+        // this function is the iterator, necessarily  this is the function that creates the iterator
+        // the actual iterator object is returned from this function
+        // this function acts as a closure for the iterator object
+        [Symbol.iterator]() {
+            var array = this.array
+            var i = this.i
+            // this is the iterator object
+            // created with an object literal It has no name so the reference to this object
+            // is assigned to the closure function
+            return {
+                // this is the next function of the iterator.
+                // when you need to call this function you simply call the closure function, (function that created iterator)
+                // because the iterator object is assigned to the function.
+                //  in this case to access this function we call [Symbol.iterator]().next()
+                next() {
+                    if (i < array.length)
+                        return {
+                            value: array[++i],
+                            done: false
+                        }
+                    return {
+                        value: undefined,
+                        done: true
+                    }
+                }
+            }
+        }
+    }
+
+    const iterator = new ArrIterator([1, 2, 3, 4, 5, 6])
+    // symbol.iterator is specific symbol meant to represent  iterators, " For OF " loops work with these types of iterators so to
+    // To define one we need to name the function [Symbol.iterator]()
+
+    // calling the next function
+    console.log(iterator[Symbol.iterator]().next())  // prints first element of array
+
+    // starts counting from the beginning because a new Iterator object is instantiated by the loop
+    for (let x of iterator) {
+        console.log(x)
+    }
+
+    //
+</script>
+
+
+</body>
+</html>
