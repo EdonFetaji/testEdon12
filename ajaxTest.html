@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Objects fetched with json</h1>
+<h4>READY STATE IS</h4>
+<p id="state"></p>
+
+<div id="log" style="width: 400px; text-align: center">
+
+
+</div>
+<button onclick="tryFetch()">Make Ajax call</button>
+
+<script>
+    // let str = '{"allowed":true}'
+    document.getElementById("state").insertAdjacentElement("",)
+    function tryFetch() {
+        fetch('https://jsonplaceholder.typicode.com/todos/1')
+            .then(response => response.json())
+            .then(json => console.log(json))
+
+    }
+
+    console.log(Boolean(undefined))
+    // let json = JSON.parse(str)
+    // console.log(json)
+
+    function showCars() {
+        var ajax = new XMLHttpRequest();
+
+        ajax.onreadystatechange = () => {
+            console.log(" READY STATE CHANGED")
+            document.getElementById("state").innerHTML += ajax.readyState + " <br>"
+            console.log(ajax.getAllResponseHeaders())
+        }
+
+
+        //  this is readystate = 1 -- the open function being executed, because 1 == the request is created , and the
+        // connection has been established with the server
+
+        ajax.open("GET", "https://raw.githubusercontent.com/EdonFetaji/testEdon12/main/FinkiCourses", true);
+        console.log("open function called")
+
+        document.getElementById("state").innerHTML += ajax.statusText
+
+
+        // STATES 2 3 4 happen BEFORE ONLOAD
+
+        // You can place onload before open function call (practically anywhere on the program,
+        // except of course before the declaration of the XMLHttp object declaration --> logical error)
+        // and it wont affect the flow of the program,
+        // because is an async function (its put to sleep if readyState!=4) its only woken up when readyState==4
+        ajax.onload = () => {
+            let response = JSON.parse(ajax.responseText)
+            // console.log(ajax)
+            console.log("ONLOAD CALLED")
+            // parsing and displaying an array of objects - courses of my faculty :)
+            let display = ""
+            response.map(el => {
+                for (let [x, y] of Object.entries(el)) {
+                    display += x + " : " + y + "<br>"
+                }
+                display += "<hr>"
+            })
+
+
+            document.getElementById("log").innerHTML = display;
+
+        }
+
+        // (read comment for onload) same goes for the rest functions of XMLHttpRequest object (except open and send)
+        ajax.onerror = () => {
+            document.getElementById("log").innerHTML = "json file could not be fetched !";
+        }
+
+        // doesnt matter where in the function you place the send method, it will always be called after open.
+        // (except of course placing it before the open function call or object declaration) - > Logical error
+        ajax.send();
+        console.log("SEND function called")
+
+    }
+
+</script>
+
+</body>
+</html>
