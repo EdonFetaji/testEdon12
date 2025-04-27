@@ -2,3 +2,5 @@ testing file stages in  git
 
 im modifying the file
 forgot to add something ....
+making the first change
+changing after i commited it
